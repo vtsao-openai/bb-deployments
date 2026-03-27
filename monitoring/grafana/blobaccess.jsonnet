@@ -16,31 +16,31 @@ simpledash.dashboard(
   templates=[
     simpledash.template(
       name='ac_backend_type',
-      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m{storage_type="ac"}, backend_type)',
+      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate5m{storage_type="ac"}, backend_type)',
       label='Action Cache backend type',
       selectionStyle=simpledash.selectSingleWithDefault('grpc'),
     ),
     simpledash.template(
       name='cas_backend_type',
-      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m{storage_type="cas"}, backend_type)',
+      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate5m{storage_type="cas"}, backend_type)',
       label='Content Addressable Storage backend type',
       selectionStyle=simpledash.selectSingleWithDefault('grpc'),
     ),
     simpledash.template(
       name='icas_backend_type',
-      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m{storage_type="icas"}, backend_type)',
+      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate5m{storage_type="icas"}, backend_type)',
       label='Indirect Content Addressable Storage backend type',
       selectionStyle=simpledash.selectSingleWithDefault('grpc'),
     ),
     simpledash.template(
       name='iscc_backend_type',
-      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m{storage_type="iscc"}, backend_type)',
+      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate5m{storage_type="iscc"}, backend_type)',
       label='Initial Size Class Cache backend type',
       selectionStyle=simpledash.selectSingleWithDefault('grpc'),
     ),
     simpledash.template(
       name='kubernetes_service',
-      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m, kubernetes_service)',
+      query='label_values(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate5m, kubernetes_service)',
       label='Service name',
       selectionStyle=simpledash.selectMultiple,
     ),
@@ -56,7 +56,7 @@ simpledash.dashboard(
         unit=simpledash.unitOperationsPerSecond,
         targets=[
           simpledash.graphTarget(
-            expr='sum(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",storage_type="%s"}) by (operation)' % [storageType, storageType],
+            expr='sum(backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate5m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",storage_type="%s"}) by (operation)' % [storageType, storageType],
             legendFormat='{{operation}}',
           ),
         ],
@@ -71,7 +71,7 @@ simpledash.dashboard(
         unit=simpledash.unitOperationsPerSecond,
         targets=[
           simpledash.graphTarget(
-            expr='sum(backend_type_grpc_code_kubernetes_service_storage_type:buildbarn_blobstore_blob_access_operations_duration_seconds_count:irate1m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",storage_type="%s"}) by (grpc_code)' % [storageType, storageType],
+            expr='sum(backend_type_grpc_code_kubernetes_service_storage_type:buildbarn_blobstore_blob_access_operations_duration_seconds_count:irate5m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",storage_type="%s"}) by (grpc_code)' % [storageType, storageType],
             legendFormat='{{grpc_code}}',
           ),
         ],
@@ -86,7 +86,7 @@ simpledash.dashboard(
         unit=simpledash.unitDurationSeconds,
         targets=[
           simpledash.heatmapTarget(
-            expr='sum(backend_type_kubernetes_service_le_operation_storage_type:buildbarn_blobstore_blob_access_operations_duration_seconds_bucket:irate1m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",operation="%s",storage_type="%s"}) by (le)' % [storageType, operation, storageType],
+            expr='sum(backend_type_kubernetes_service_le_operation_storage_type:buildbarn_blobstore_blob_access_operations_duration_seconds_bucket:irate5m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",operation="%s",storage_type="%s"}) by (le)' % [storageType, operation, storageType],
           ),
         ],
       ),
@@ -101,7 +101,7 @@ simpledash.dashboard(
         unit=simpledash.unitBytes,
         targets=[
           simpledash.heatmapTarget(
-            expr='sum(backend_type_kubernetes_service_le_operation_storage_type:buildbarn_blobstore_blob_access_operations_blob_size_bytes_bucket:irate1m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",operation="%s",storage_type="%s"}) by (le)' % [storageType, operation, storageType],
+            expr='sum(backend_type_kubernetes_service_le_operation_storage_type:buildbarn_blobstore_blob_access_operations_blob_size_bytes_bucket:irate5m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",operation="%s",storage_type="%s"}) by (le)' % [storageType, operation, storageType],
           ),
         ],
       ),
@@ -116,7 +116,7 @@ simpledash.dashboard(
         unit=simpledash.unitNone,
         targets=[
           simpledash.heatmapTarget(
-            expr='sum(backend_type_kubernetes_service_le_storage_type:buildbarn_blobstore_blob_access_operations_find_missing_batch_size_bucket:irate1m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",storage_type="%s"}) by (le)' % [storageType, storageType],
+            expr='sum(backend_type_kubernetes_service_le_storage_type:buildbarn_blobstore_blob_access_operations_find_missing_batch_size_bucket:irate5m{backend_type=~"$%s_backend_type",kubernetes_service=~"$kubernetes_service",storage_type="%s"}) by (le)' % [storageType, storageType],
           ),
         ],
       ),
